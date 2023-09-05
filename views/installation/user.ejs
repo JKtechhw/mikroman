@@ -1,0 +1,25 @@
+<%- include("partials/header"); -%>
+<h6>Krok 2. z 3</h6>
+<h2>Uživatel</h2>
+<p>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. At deleniti, ex quam sequi tempore, alias repudiandae consequatur quo fugiat dignissimos harum nemo cumque eaque officia, asperiores dolore eum accusantium nam.
+</p>
+<form action="/api/installation/user" method="POST">
+    <label>
+        <input name="username" required />
+        <span class="placeholder">Uživatelské jméno</span>
+    </label>
+
+    <label>
+        <input name="password" type="password" required />
+        <span class="placeholder">Heslo</span>
+    </label>
+
+    <label>
+        <input name="password_repeat" type="password" required />
+        <span class="placeholder">Heslo znovu</span>
+    </label>
+    <button type="submit">Pokračovat</button>
+</form>
+
+<%- include("partials/footer"); -%>

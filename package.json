@@ -1,0 +1,50 @@
+{
+  "name": "mikroman",
+  "version": "0.0.1-alpha",
+  "description": "Manager for mikrotik routers",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config ./app/production.config.js",
+    "dev": "concurrently --kill-others \"webpack --config ./app/development.config.js --watch\" \"nodemon server.js\"",
+    "run": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JKtechhw/mikroman.git"
+  },
+  "keywords": [
+    "Mikrotik"
+  ],
+  "author": "Jakub Hrdlicka",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JKtechhw/mikroman/issues"
+  },
+  "homepage": "https://github.com/JKtechhw/mikroman#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.17.3",
+    "node-routeros": "^1.6.9",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.15",
+    "concurrently": "^8.2.1",
+    "css-loader": "^6.8.1",
+    "mini-css-extract-plugin": "^2.7.6",
+    "nodemon": "^3.0.1",
+    "postcss": "^8.4.28",
+    "postcss-loader": "^7.3.3",
+    "postcss-preset-env": "^9.1.1",
+    "sass": "^1.66.1",
+    "sass-loader": "^13.3.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}

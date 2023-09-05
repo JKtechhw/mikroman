@@ -4,8 +4,6 @@ public/
 #Created config file
 config/config.json
 
-package-lock.json
-
 # Logs
 logs
 *.log

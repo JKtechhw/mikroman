@@ -1,0 +1,9 @@
+<%- include("partials/header"); -%>
+<h2>Error • <%= errorCode %></h2>
+<% for (const paragraph of errorParagraphs) { %>
+<p>
+    <%= paragraph %>
+</p>
+<% } %>
+
+<%- include("partials/footer"); -%>
