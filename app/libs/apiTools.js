@@ -50,8 +50,6 @@ class apiTools {
                         try {
                             const response = JSON.parse(XHR.responseText);
 
-                            console.log(response.message)
-
                             if(response.error_field) {
                                 const errorField = submitedForm.querySelector(`[name=${response.error_field}]`)
                                 if(errorField) {
@@ -61,18 +59,6 @@ class apiTools {
                                     }, {once: true});
                                     errorField.focus();
                                 }
-                            }
-
-                            const errorMessage = document.createElement("p");
-                            errorMessage.innerText = response.message;
-                            errorMessage.classList.add("error-message");
-
-                            if(submitButton) {
-                                submitButton.insertAdjacentElement("beforebegin", errorMessage);
-                            }
-
-                            else {
-                                submitedForm.insertAdjacentElement("beforeend", errorMessage);
                             }
 
                             reject(response.message);

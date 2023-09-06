@@ -50,7 +50,7 @@ router.post("/", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Přihlášení se nezdařilo"
+            message: "Zkontrolujte uživatelské jméno a heslo"
         });
         return;
     }
@@ -73,7 +73,7 @@ router.post("/", async (req, res) => {
                 success: false,
                 status: 400,
                 error: "Bad Request",
-                message: "Přihlášení se nezdařilo"
+                message: "Zkontrolujte uživatelské jméno a heslo"
             });
             return;
         }
@@ -83,7 +83,7 @@ router.post("/", async (req, res) => {
 
         res.json({
             success: true,
-            message: "Úspěšně jste přihlášeni"
+            message: "Byl jste úspěšně přihlášen"
         });
     });
 });

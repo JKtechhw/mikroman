@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const installApiRouter = require("./api/installation");
+const installApiRouter = require("./api/configuration");
 const loginApiRouter = require("./api/login");
 
-router.use("/installation", installApiRouter);
+router.use("/configuration", installApiRouter);
 router.use("/login", loginApiRouter);
 
 //Error routes

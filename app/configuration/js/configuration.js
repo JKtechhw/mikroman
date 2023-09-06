@@ -1,9 +1,10 @@
 'use strict';
 
+import notification from "../../libs/notifications";
 import apiTools from "../../libs/apiTools";
-import "../scss/installation.scss";
+import "../scss/configuration.scss";
 
-class installation {
+class configuration {
     constructor() {
         this.setFormEvents();
     }
@@ -14,19 +15,27 @@ class installation {
         const apiTool = new apiTools();
 
         form?.addEventListener("submit", async (e) => {
+            let response;
+
             try {
-                await apiTool.sendForm(e);
+                response = await apiTool.sendForm(e);
             }
 
             catch(e) {
+                const not = new notification();
+                not.error(e, 10);
+                return;
+            }
+
+            if((typeof response.continue != "undefined") && (response.continue)) {
+                window.location.replace(response.continue);
                 return;
             }
 
             setTimeout(async () => {
                 const newPage = await fetch(window.location.href);
                 const newPageCode = await newPage.text();
-    
-                console.log(newPageCode)
+
     
                 const newPageDom = document.createElement("html");
                 newPageDom.innerHTML = newPageCode;
@@ -54,4 +63,4 @@ class installation {
     }
 }
 
-new installation();
+new configuration();

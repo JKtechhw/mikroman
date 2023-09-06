@@ -1,0 +1,35 @@
+<%- include("partials/header"); -%>
+<h6>Krok 1. z 3</h6>
+<h2>Databáze</h2>
+<p>
+    Pro fungování aplikace je potřeba PostgreSQL databáze a to nejlépe se separátním uživatelem a databází, jinak by mohlo dojít ke kolizím v názvech tabulek. 
+</p>
+<form action="/api/configuration/database/" method="POST">
+    <label>
+        <input name="db_host" placeholder="172.17.0.1" value="<%= db_host %>" required />
+        <span class="placeholder">Host</span>
+    </label>
+
+    <label>
+        <input name="db_port" placeholder="5432" value="<%= db_port %>"required />
+        <span class="placeholder">Port</span>
+    </label>
+
+    <label>
+        <input name="db_database" value="<%= db_name %>" required />
+        <span class="placeholder">Název databáze</span>
+    </label>
+
+    <label>
+        <input name="db_user" value="<%= db_user %>" required />
+        <span class="placeholder">Uživatelské jméno</span>
+    </label>
+
+    <label>
+        <input name="db_password" type="password" value="<%= db_password %>" required />
+        <span class="placeholder">Heslo uživatele</span>
+    </label>
+    <button type="submit">Pokračovat</button>
+</form>
+
+<%- include("partials/footer"); -%>

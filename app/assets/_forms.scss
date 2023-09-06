@@ -1,0 +1,118 @@
+//Login form, configuration forms
+.block-form {
+    background-color: $color-background-light;
+    border: 10px solid $color-theme;
+    border-radius: 15px;
+    max-width: 500px;
+    padding: 15px;
+    margin: 10px;
+    width: 100%;
+
+    h2 {
+        color: #ffffff;
+    }
+
+    h6 {
+        font-weight: 400;
+        color: #d3d3d3;
+        margin: 15px 0;
+    }
+
+    p {
+        color: $color-gray-dark;
+        text-align: center;
+    }
+
+    label {
+        position: relative;
+        display: block;
+        margin: 40px 0 20px 0;
+
+        .placeholder {
+            transition: top 0.2s, transform 0.2s, color 0.2s, font-size 0.2s;
+            transform: translateY(-50%);
+            color: $color-gray-dark;
+            pointer-events: none;
+            position: absolute;
+            font-size: 0.85rem;
+            user-select: none;
+            opacity: 0.5;
+            left: 13px;
+            top: 50%;
+        }
+        
+        input {
+            background-color: $color-input-background-dark;
+            color: $color-input-text-light;
+            border: 1px solid transparent;
+            box-sizing: border-box;
+            border-radius: 5px;
+            outline: none;
+            padding: 10px;
+            width: 100%;
+
+            &.error-field {
+                background-color: #231b1b;
+            }
+
+            &:focus ~ .placeholder, &:valid ~ .placeholder, &:placeholder-shown ~ .placeholder {
+                transform: translateY(0);
+                top: calc(-1rem - 12px);
+                color: #b3b3b3;
+                font-size: 1rem;
+                opacity: 1;
+            }
+
+            &::placeholder {
+                user-select: none;
+            }
+        }
+    }
+    
+    a.theme-link, button[type="submit"] {
+        transition: 0.2s background-color;
+        background-color: $color-theme;
+        padding: 8px 32px 8px 12px;
+        text-decoration: none;
+        position: relative;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        color: #ffffff;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        float: right;
+    
+        &:disabled {
+            background-color: $color-theme-dark;
+            cursor: not-allowed;
+        }
+    
+        &::after {
+            transition: 0.2s right, 0.2s color;
+            font-family: $font-bootstrap-icons;
+            transform: translateY(-50%);
+            position: absolute;
+            margin-left: 8px;
+            content: "\F138";
+            right: 12px;
+            top: 50%;
+        }
+    
+        &:hover {
+            background-color: $color-theme-dark;
+    
+            &::after {
+                right: 5px;
+            }
+        }
+    }
+
+    i {
+        background-color: $color-background;
+        display: inline-block;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        padding: 5px;
+    }
+}

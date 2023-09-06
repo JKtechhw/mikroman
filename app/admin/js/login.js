@@ -1,7 +1,8 @@
 'use strict';
+import notification from "../../libs/notifications";
 import apiTools from "../../libs/apiTools";
-
 import "../scss/login.scss";
+
 
 class login {
     constructor() {
@@ -19,9 +20,16 @@ class login {
             }
 
             catch(e) {
+                const not = new notification();
+                not.error(e, 10, "Přilášení se nezdařilo");
                 return;
             }
+
+            window.location.reload();
         });
+
+        const firstInput = form?.querySelector("input");
+        firstInput?.focus();
     }
 }
 

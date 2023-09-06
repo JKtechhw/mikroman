@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
     mode: 'production',
     entry: {
-        installation: ['./app/installation/js/installation.js'],
+        configuration: ['./app/configuration/js/configuration.js'],
         login: ['./app/admin/js/login.js'],
     },
     output: {

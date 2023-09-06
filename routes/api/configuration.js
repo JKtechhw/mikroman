@@ -8,6 +8,23 @@ const fs = require("fs");
 
 const router = express.Router();
 
+router.use("*", (req, res, next) => {
+    const mode = req.app.get("mode");
+    if(mode == "configuration") {
+        next();
+        return;
+    }
+
+    res.status(403).json({
+        success: false,
+        status: 403,
+        error: "Forbidden",
+        message: "Konfigurace již byla dokončena"
+    });
+    return;
+});
+
+
 router.post("/database", async (req, res) => {
     const ce = new configEditor();
     const config = ce.getConfig();
@@ -66,7 +83,7 @@ router.post("/database", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Port musí být číslo",
+            message: "Neplatný port",
             error_field: "db_port"
         });
         return;
@@ -77,7 +94,7 @@ router.post("/database", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Neplatná hodnota portu",
+            message: "Neplatný port",
             error_field: "db_port"
         });
         return;
@@ -88,7 +105,7 @@ router.post("/database", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Neplatná hodnota portu",
+            message: "Neplatný port",
             error_field: "db_port"
         });
         return;
@@ -166,7 +183,7 @@ router.post("/database", async (req, res) => {
             status: 500,
             error: "Internal Server Error",
             message: "Databáze není prázdná",
-            hint: "Odstraňte všechny tabulky"
+            accept: "Opravdu chcete použít neprázdnou databázi"
         });
         return;
     }
@@ -192,12 +209,12 @@ router.post("/database", async (req, res) => {
         return;
     }
 
-    console.log("Satabase structure was successfully created");
+    console.log("Database structure was successfully created");
 
     const dbValues = {
-        db_name: req.body.db_database,
         db_host: req.body.db_host,
         db_port: req.body.db_port,
+        db_name: req.body.db_database,
         db_user: req.body.db_user,
         db_password: req.body.db_password,
     }
@@ -371,12 +388,23 @@ router.post("/user", async (req, res) => {
 
         console.log(`First user "${req.body.username}" was successfully created`);
     
-        res.status(200).json({
+        res.json({
             success: true,
-            status: 200,
             message: "Uživatel byl úspěšně vytvořen"
         });
         return;
+    });
+});
+
+router.post("/finish", async (req, res) => {
+    req.app.set("mode", "standard");
+
+    console.log(`Exiting configuration mode`);
+
+    res.json({
+        success: true,
+        message: "Uživatel byl úspěšně vytvořen",
+        continue: "/"
     });
 });
 

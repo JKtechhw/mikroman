@@ -9,6 +9,9 @@
     Nyní můžete pokračovat na přihlášení a přidání prvního zařízení.
 </p>
 
-<a href="/" class="theme-link">Dokončit</a>
+<form action="/api/configuration/finish" method="POST">
+    <input type="hidden" value="true" name="submit" />
+    <button type="submit">Dokočit</button>
+</form>
 
 <%- include("partials/footer"); -%>

@@ -35,9 +35,20 @@ async function initApp() {
         console.log("Creating configuration file");
 
         const valuesToEdit = {}
-        const defaultConfig = config.getConfig(path.join(__dirname, "config", "default.json"));
 
-        valuesToEdit["port"] = typeof process.env.WEBUI_PORT == "undefined" ? defaultConfig.port : process.env.WEBUI_PORT;
+        //Port from env
+        typeof process.env.WEBUI_PORT == "undefined" ? null : valuesToEdit["port"] = process.env.WEBUI_PORT;
+
+        //Load postgresql connection 
+        typeof process.env.DB_HOST == "undefined" ? null : valuesToEdit["db_host"] = process.env.DB_HOST;
+
+        typeof process.env.DB_NAME == "undefined" ? null : valuesToEdit["db_name"] = process.env.DB_NAME;
+
+        typeof process.env.DB_PORT == "undefined" ? null : valuesToEdit["db_port"] = process.env.DB_PORT;
+
+        typeof process.env.DB_USER == "undefined" ? null : valuesToEdit["db_user"] = process.env.DB_USER;
+
+        typeof process.env.DB_PASSWORD == "undefined" ? null : valuesToEdit["db_password"] = process.env.DB_PASSWORD;
 
         try {
             await config.createFromDefault(valuesToEdit);
@@ -53,8 +64,9 @@ async function initApp() {
     const configData = config.getConfig();
 
     if(typeof configData.configured == "undefined" || configData.configured !== true) {
+        app.set("mode", "configuration");
         console.log("Starting app in configuration mode\n");
-        console.log("Configuration page is available on http://localhost:3000/installation\n");
+        console.log("Configuration page is available on http://localhost:3000/configuration");
     }
     
     else {
@@ -67,11 +79,13 @@ async function initApp() {
         }
 
         catch(e) {
+            console.error("Database test failed");
             throw e;
         }
 
         console.log("Database test was successful\n");
 
+        app.set("mode", "standard");
         console.log("Starting app in standard mode");
     }
 
