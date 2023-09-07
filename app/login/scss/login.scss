@@ -1,0 +1,31 @@
+@import "../../assets/_variables";
+
+body {
+    background-color: $color-background;
+    box-sizing: border-box;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+#login-box {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.block-form {
+    label.inline {
+        margin-left: 10px;
+    }
+}
+
+#login-form {
+    max-width: 400px
+}
+
+@import "../../assets/_defaults";
+@import "../../assets/_notifications";
+@import "../../assets/_forms";

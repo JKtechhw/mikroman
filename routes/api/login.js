@@ -88,4 +88,25 @@ router.post("/", async (req, res) => {
     });
 });
 
+router.delete("/", async (req, res) => {
+    req.session.destroy((err) => {
+        if(err) {
+            console.error(err);
+
+            res.status(500).json({
+                success: false,
+                status: 500,
+                error: "Internal Server Error",
+                message: "Odhlášení se nezdařilo"
+            });
+            return;
+        }
+    });
+
+    res.json({
+        success: true,
+        message: "Byl jste úspěšně odhlášen"
+    });
+});
+
 module.exports = router;

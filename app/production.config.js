@@ -5,11 +5,13 @@ module.exports = {
     mode: 'production',
     entry: {
         configuration: ['./app/configuration/js/configuration.js'],
-        login: ['./app/admin/js/login.js'],
+        login: ['./app/login/js/login.js'],
+        admin: ['./app/admin/js/admin.js'],
     },
     output: {
         path: path.resolve(__dirname, '..', 'public', 'js'),
         filename: '[name].js',
+        //assetModuleFilename: '../fonts/[hash][ext][query]'
     },
     plugins: [
         require("autoprefixer"),
@@ -41,9 +43,21 @@ module.exports = {
                     },
                     {
                         loader: "sass-loader",
+                        options: {
+                            sassOptions: {
+                                outputStyle: "compressed",
+                            }
+                        }
                     },
                 ]
             },
+            {
+                test: /\.woff2?$/,
+                type: "asset/resource",
+                generator: {
+                    filename: '../fonts/[hash][ext][query]'
+                }
+            }
         ]
     },
 }

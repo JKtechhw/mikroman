@@ -15,3 +15,32 @@ input, label, button {
 p, span, a {
     font-family: $font-roboto;
 }
+
+.checkbox {
+    vertical-align: middle;
+    display: inline-block;
+    user-select: none;
+
+    input[type="checkbox"] {
+        display: none;
+
+        &:checked ~ .indicator {
+            background-color: $color-theme;
+
+            &::after {
+                content: "\F26E";
+            }
+        }
+    }
+
+    .indicator {
+        background-color: $color-input-background-dark;
+        font-family: $font-bootstrap-icons;
+        justify-content: center;
+        align-items: center;
+        border-radius: 3px;
+        display: flex;
+        height: 15px;
+        width: 15px;
+    }
+}

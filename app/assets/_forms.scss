@@ -67,6 +67,17 @@
                 user-select: none;
             }
         }
+
+        &.inline {
+            input[type="checkbox"] {
+                width: unset;
+            }
+
+            span {
+                color: $color-gray-light;
+                user-select: none;
+            }
+        }
     }
     
     a.theme-link, button[type="submit"] {

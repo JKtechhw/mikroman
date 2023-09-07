@@ -2,8 +2,8 @@ const configEditor = require("./libs/configEditor");
 const appRouter = require("./routes/router");
 const session = require('express-session');
 const express = require("express");
+const crypto = require("crypto");
 const DB = require("./libs/db");
-const path = require("path");
 
 require("dotenv").config();
 const app = express();
@@ -12,24 +12,15 @@ app.set("view engine", "ejs");
 
 app.set('trust proxy', 1);
 
-app.use(session({
-    secret: crypto.randomUUID(),
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        sameSite: true,
-        httpOnly: true,
-        secure: false
-    }
-}));
-
 //Init on start
-const config = new configEditor();
 
 async function initApp() {
     console.log("=============================");
     console.log("Initializing app before start");
     console.log("=============================\n");
+
+    const config = new configEditor();
+    let secret;
 
     if(config.exists() == false) {
         console.log("Creating configuration file");
@@ -38,6 +29,10 @@ async function initApp() {
 
         //Port from env
         typeof process.env.WEBUI_PORT == "undefined" ? null : valuesToEdit["port"] = process.env.WEBUI_PORT;
+
+        //Seret
+        secret = crypto.randomBytes(64).toString('hex');
+        valuesToEdit["secret"] = secret;
 
         //Load postgresql connection 
         typeof process.env.DB_HOST == "undefined" ? null : valuesToEdit["db_host"] = process.env.DB_HOST;
@@ -60,6 +55,21 @@ async function initApp() {
         
         console.log("Config file was successfully created\n");
     }
+
+    else {
+        secret = config.getConfig().secret;
+    }
+
+    app.use(session({
+        secret: secret,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            sameSite: true,
+            httpOnly: true,
+            secure: false
+        }
+    }));
 
     const configData = config.getConfig();
 

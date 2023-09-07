@@ -13,11 +13,13 @@ router.get("/", (req, res, next) => {
 
 router.get("/", (req, res) => {
     if(typeof req.session.loged_in == "undefined" || req.session.loged_in == false) {
-        res.render("admin/login");
+        res.render("login/login");
         return;
     }
 
-    res.render("admin/dashboard");
+    res.render("admin/dashboard", {
+        title: "Dashboard"
+    });
 });
 
 module.exports = router;

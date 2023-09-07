@@ -5,7 +5,8 @@ module.exports = {
     mode: 'development',
     entry: {
         configuration: ['./app/configuration/js/configuration.js'],
-        login: ['./app/admin/js/login.js'],
+        login: ['./app/login/js/login.js'],
+        admin: ['./app/admin/js/admin.js'],
     },
     devtool: 'source-map',
     output: {
@@ -45,6 +46,13 @@ module.exports = {
                     },
                 ]
             },
+            {
+                test: /\.woff2?$/,
+                type: "asset/resource",
+                generator: {
+                    filename: '../fonts/[hash][ext][query]'
+                }
+            }
         ]
     },
 }
