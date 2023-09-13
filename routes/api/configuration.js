@@ -1,9 +1,9 @@
 const configEditor = require("../../libs/configEditor");
+const localization = require("../../libs/localization");
 const DB = require("../../libs/db");
 const express = require("express");
 const bcrypt = require("bcrypt");
 const path = require("path");
-const net = require('net');
 const fs = require("fs");
 
 const router = express.Router();
@@ -15,19 +15,96 @@ router.use("*", (req, res, next) => {
         return;
     }
 
+    const local = new localization();
+
     res.status(403).json({
         success: false,
         status: 403,
         error: "Forbidden",
-        message: "Konfigurace již byla dokončena"
+        message: local.getTranslation().configuration.completed_configuration
     });
     return;
 });
 
+router.post("/localization", (req, res) => {
+    const ce = new configEditor();
+    const config = ce.getConfig();
+    const local = new localization();
+
+    if(
+        Object.keys(config).includes("country") &&
+        Object.keys(config).includes("language")
+    ) {
+        res.status(400).json({
+            success: false,
+            status: 400,
+            error: "Bad Request",
+            message: local.getTranslation().configuration.completed_localization
+        });
+        return;
+    }
+
+    if(typeof req.body.language == "undefined" || req.body.language.replaceAll(" ", "") == "") {
+        res.status(400).json({
+            success: false,
+            status: 400,
+            error: "Bad Request",
+            message: local.getTranslation().configuration.fill_all_fields,
+            error_field: "language"
+        });
+        return;
+    }
+
+    if(local.validateLanguage(req.body.language) == false) {
+        res.status(400).json({
+            success: false,
+            status: 400,
+            error: "Bad Request",
+            message: local.getTranslation().configuration.language_not_available,
+            error_field: "language"
+        });
+        return;
+    }
+
+    if(typeof req.body.country == "undefined" || req.body.country.replaceAll(" ", "") == "") {
+        res.status(400).json({
+            success: false,
+            status: 400,
+            error: "Bad Request",
+            message: local.getTranslation().configuration.fill_all_fields,
+            error_field: "country"
+        });
+        return;
+    }
+
+    if(local.validateCountry(req.body.country) == false) {
+        res.status(400).json({
+            success: false,
+            status: 400,
+            error: "Bad Request",
+            message: local.getTranslation().configuration.invalid_country,
+            error_field: "country"
+        });
+        return;
+    }
+
+    ce.editConfig({
+        language: req.body.language,
+        country: req.body.country
+    });
+
+    console.log(`Localization was successfully configured`);
+
+    res.json({
+        success: true,
+        message: local.getTranslation().configuration.successful_localization
+    });
+});
 
 router.post("/database", async (req, res) => {
     const ce = new configEditor();
     const config = ce.getConfig();
+    const local = new localization();
 
     if(
         Object.keys(config).includes("db_name") &&
@@ -40,7 +117,7 @@ router.post("/database", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Databáze již byla nastavena"
+            message: local.getTranslation().configuration.completed_database
         });
         return;
     }
@@ -50,18 +127,7 @@ router.post("/database", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Vyplňte všechny údaje",
-            error_field: "db_host"
-        });
-        return;
-    }
-
-    if(!net.isIP(req.body.db_host)) {
-        res.status(400).json({
-            success: false,
-            status: 400,
-            error: "Bad Request",
-            message: "Neplatný host",
+            message: local.getTranslation().configuration.fill_all_fields,
             error_field: "db_host"
         });
         return;
@@ -72,7 +138,7 @@ router.post("/database", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Vyplňte všechny údaje",
+            message: local.getTranslation().configuration.fill_all_fields,
             error_field: "db_port"
         });
         return;
@@ -83,7 +149,7 @@ router.post("/database", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Neplatný port",
+            message: local.getTranslation().configuration.invalid_port,
             error_field: "db_port"
         });
         return;
@@ -94,18 +160,7 @@ router.post("/database", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Neplatný port",
-            error_field: "db_port"
-        });
-        return;
-    }
-
-    if(req.body.db_port <= 0) {
-        res.status(400).json({
-            success: false,
-            status: 400,
-            error: "Bad Request",
-            message: "Neplatný port",
+            message: local.getTranslation().configuration.invalid_port,
             error_field: "db_port"
         });
         return;
@@ -116,7 +171,7 @@ router.post("/database", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Vyplňte všechny údaje",
+            message: local.getTranslation().configuration.fill_all_fields,
             error_field: "db_user"
         });
         return;
@@ -127,7 +182,7 @@ router.post("/database", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Vyplňte všechny údaje",
+            message: local.getTranslation().configuration.fill_all_fields,
             error_field: "db_database"
         });
         return;
@@ -138,7 +193,7 @@ router.post("/database", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Vyplňte všechny údaje",
+            message: local.getTranslation().configuration.fill_all_fields,
             error_field: "db_password"
         });
         return;
@@ -162,31 +217,31 @@ router.post("/database", async (req, res) => {
 
     let tableCount; 
 
-    try {
-        tableCount = await db.queryCredentials(req.body.db_user, req.body.db_password, req.body.db_database, req.body.db_host, req.body.db_port, "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND  schemaname != 'information_schema'");
-    }
+    // try {
+    //     tableCount = await db.queryCredentials(req.body.db_user, req.body.db_password, req.body.db_database, req.body.db_host, req.body.db_port, "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND  schemaname != 'information_schema'");
+    // }
 
-    catch(e) {
-        res.status(500).json({
-            success: false,
-            status: 500,
-            error: "Internal Server Error",
-            message: "Nepodařilo se získat tabulky databáze",
-            hint: "Zkontrolujte log aplikace"
-        });
-        return;
-    }
+    // catch(e) {
+    //     res.status(500).json({
+    //         success: false,
+    //         status: 500,
+    //         error: "Internal Server Error",
+    //         message: "Nepodařilo se získat tabulky databáze",
+    //         hint: local.getTranslation().configuration.check_log
+    //     });
+    //     return;
+    // }
 
-    if(tableCount.rowCount > 0) {
-        res.status(500).json({
-            success: false,
-            status: 500,
-            error: "Internal Server Error",
-            message: "Databáze není prázdná",
-            accept: "Opravdu chcete použít neprázdnou databázi"
-        });
-        return;
-    }
+    // if(tableCount.rowCount > 0) {
+    //     res.status(500).json({
+    //         success: false,
+    //         status: 500,
+    //         error: "Internal Server Error",
+    //         message: "Databáze není prázdná",
+    //         accept: "Opravdu chcete použít neprázdnou databázi"
+    //     });
+    //     return;
+    // }
 
     const sql = fs.readFileSync(path.join(__dirname, "..", "..", "structures", "mikroman.sql")).toString();
 
@@ -203,8 +258,8 @@ router.post("/database", async (req, res) => {
             success: false,
             status: 500,
             error: "Internal Server Error",
-            message: "Nepodařilo se vytvořit strukturu databáze",
-            hint: "Zkontrolujte log aplikace"
+            message: local.getTranslation().configuration.unable_to_create_structure,
+            hint: local.getTranslation().configuration.check_log
         });
         return;
     }
@@ -230,8 +285,8 @@ router.post("/database", async (req, res) => {
             success: false,
             status: 500,
             error: "Internal Server Error",
-            message: "Nepodařilo se zapsat údaje do konfiguračního souboru",
-            hint: "Zkontrolujte log aplikace"
+            message: local.getTranslation().configuration.unable_write_to_file,
+            hint: local.getTranslation().configuration.check_log
         });
         return;
     }
@@ -241,7 +296,7 @@ router.post("/database", async (req, res) => {
     res.status(200).json({
         success: true,
         status: 200,
-        message: "Připojení k databázi bylo úspěšné"
+        message: local.getTranslation().configuration.successful_database
     });
     return;
 });
@@ -249,9 +304,20 @@ router.post("/database", async (req, res) => {
 router.post("/user", async (req, res) => {
     const ce = new configEditor();
     const config = ce.getConfig();
+    const local = new localization();
 
     const db = new DB();
     let userExists;
+
+    if(config.configured == true) {
+        res.status(400).json({
+            success: false,
+            status: 400,
+            error: "Bad Request",
+            message: local.getTranslation().configuration.completed_user
+        });
+        return;
+    }
 
     try {
         userExists = await db.query("SELECT * FROM users");
@@ -262,8 +328,8 @@ router.post("/user", async (req, res) => {
             success: false,
             status: 500,
             error: "Internal Server Error",
-            message: "Nepodařilo se získat data z databáze",
-            hint: "Zkontrolujte log aplikace"
+            message: local.getTranslation().configuration.unable_to_read_from_db,
+            hint: local.getTranslation().configuration.check_log
         });
         return;
     }
@@ -273,20 +339,10 @@ router.post("/user", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Uživatel byl již vytvořen"
+            message: local.getTranslation().configuration.user_already_exists
         });
 
         await ce.editConfig({configured: true});
-        return;
-    }
-
-    if(config.configured == true) {
-        res.status(400).json({
-            success: false,
-            status: 400,
-            error: "Bad Request",
-            message: "Uživatel byl již vytvořen"
-        });
         return;
     }
 
@@ -295,7 +351,7 @@ router.post("/user", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Vyplňte všechny údaje",
+            message: local.getTranslation().configuration.fill_all_fields,
             error_field: "username"
         });
         return;
@@ -306,7 +362,7 @@ router.post("/user", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Vyplňte všechny údaje",
+            message: local.getTranslation().configuration.fill_all_fields,
             error_field: "password"
         });
         return;
@@ -317,7 +373,7 @@ router.post("/user", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Vyplňte všechny údaje",
+            message: local.getTranslation().configuration.fill_all_fields,
             error_field: "password_repeat"
         });
         return;
@@ -328,7 +384,7 @@ router.post("/user", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Hesla se neschodují",
+            message: local.getTranslation().configuration.passwords_not_match,
             error_field: "password_repeat"
         });
         return;
@@ -342,8 +398,8 @@ router.post("/user", async (req, res) => {
                 success: false,
                 status: 500,
                 error: "Internal Server Error",
-                message: "Nepodařilo se vytvořit uživatele",
-                hint: "Zkontrolujte log aplikace"
+                message: local.getTranslation().configuration.unable_to_create_user,
+                hint: local.getTranslation().configuration.check_log
             });
             return;
         }
@@ -359,8 +415,8 @@ router.post("/user", async (req, res) => {
                 success: false,
                 status: 500,
                 error: "Internal Server Error",
-                message: "Nepodařilo se vytvořit uživatele",
-                hint: "Zkontrolujte log aplikace"
+                message: local.getTranslation().configuration.unable_to_create_user,
+                hint: local.getTranslation().configuration.check_log
             });
             return;
         }
@@ -380,8 +436,8 @@ router.post("/user", async (req, res) => {
                 success: false,
                 status: 500,
                 error: "Internal Server Error",
-                message: "Nepodařilo se zapsat údaje do konfiguračního souboru",
-                hint: "Zkontrolujte log aplikace"
+                message: local.getTranslation().configuration.unable_write_to_file,
+                hint: local.getTranslation().configuration.check_log
             });
             return;
         }
@@ -390,7 +446,7 @@ router.post("/user", async (req, res) => {
     
         res.json({
             success: true,
-            message: "Uživatel byl úspěšně vytvořen"
+            message: local.getTranslation().configuration.successful_user
         });
         return;
     });
@@ -403,7 +459,6 @@ router.post("/finish", async (req, res) => {
 
     res.json({
         success: true,
-        message: "Uživatel byl úspěšně vytvořen",
         continue: "/"
     });
 });

@@ -1,35 +1,52 @@
 <%- include("partials/header"); -%>
-<h6>Krok 1. z 3</h6>
-<h2>Databáze</h2>
+<h6><%= translation.step %> 2. <%= translation.of %> 4</h6>
+<h2><%= translation.database %></h2>
 <p>
-    Pro fungování aplikace je potřeba PostgreSQL databáze a to nejlépe se separátním uživatelem a databází, jinak by mohlo dojít ke kolizím v názvech tabulek. 
+    <%= translation.database_configuration_text %>
 </p>
-<form action="/api/configuration/database/" method="POST">
+<form action="/api/configuration/database/" method="POST" autocomplete="off">
     <label>
         <input name="db_host" placeholder="172.17.0.1" value="<%= db_host %>" required />
-        <span class="placeholder">Host</span>
+        <span class="placeholder"><%= translation.host %></span>
     </label>
 
     <label>
         <input name="db_port" placeholder="5432" value="<%= db_port %>"required />
-        <span class="placeholder">Port</span>
+        <span class="placeholder"><%= translation.port %></span>
     </label>
 
     <label>
         <input name="db_database" value="<%= db_name %>" required />
-        <span class="placeholder">Název databáze</span>
+        <span class="placeholder"><%= translation.database_name %></span>
     </label>
 
     <label>
         <input name="db_user" value="<%= db_user %>" required />
-        <span class="placeholder">Uživatelské jméno</span>
+        <span class="placeholder"><%= translation.username %></span>
     </label>
 
     <label>
         <input name="db_password" type="password" value="<%= db_password %>" required />
-        <span class="placeholder">Heslo uživatele</span>
+        <span class="placeholder"><%= translation.password %></span>
     </label>
-    <button type="submit">Pokračovat</button>
+
+    <!-- <label class="inline">
+        <span class="checkbox" data-toggle-form-part="#advanced-form-part">
+            <input type="checkbox" />
+            <div class="indicator"></div>
+        </span>
+
+        <span>Pokročilé možnosti</span>
+    </label>
+
+    <div id="advanced-form-part" class="fom-part">
+        <label>
+            <input name="db_prefix" required />
+            <span class="placeholder">Předpona tabulek</span>
+        </label>
+    </div> -->
+
+    <button type="submit"><%= translation.continue %></button>
 </form>
 
 <%- include("partials/footer"); -%>

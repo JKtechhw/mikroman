@@ -60,6 +60,20 @@ class configuration {
 
         const firstInput = form?.querySelector("input");
         firstInput?.focus();
+
+        const partToggleElements = form?.querySelectorAll("[data-toggle-form-part]");
+        partToggleElements?.forEach(element => {
+            element.addEventListener("change", (e) => {
+                const targetPart = document.querySelector(element.dataset.toggleFormPart);
+                if(e.target.checked) {
+                    targetPart.classList.add("visible");
+                }
+
+                else {
+                    targetPart.classList.remove("visible");
+                }
+            });
+        });
     }
 }
 

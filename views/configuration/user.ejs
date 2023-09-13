@@ -1,25 +1,25 @@
 <%- include("partials/header"); -%>
-<h6>Krok 2. z 3</h6>
-<h2>Uživatel</h2>
+<h6><%= translation.step %> 3. <%= translation.of %> 4</h6>
+<h2><%= translation.user %></h2>
 <p>
-    Vytvořte prvního uživatele, tento uživatel <b>nemůže</b> být odebrán. Doporučuji pro něj zvolit <b>silné</b> heslo.
+    <%- translation.user_configuration_text %>
 </p>
-<form action="/api/configuration/user" method="POST">
+<form action="/api/configuration/user" method="POST" autocomplete="off">
     <label>
         <input name="username" required />
-        <span class="placeholder">Uživatelské jméno</span>
+        <span class="placeholder"><%= translation.username %></span>
     </label>
 
     <label>
         <input name="password" type="password" required />
-        <span class="placeholder">Heslo</span>
+        <span class="placeholder"><%= translation.password %></span>
     </label>
 
     <label>
         <input name="password_repeat" type="password" required />
-        <span class="placeholder">Heslo znovu</span>
+        <span class="placeholder"><%= translation.confirm_password %></span>
     </label>
-    <button type="submit">Pokračovat</button>
+    <button type="submit"><%= translation.continue %></button>
 </form>
 
 <%- include("partials/footer"); -%>

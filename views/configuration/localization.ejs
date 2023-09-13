@@ -1,0 +1,30 @@
+<%- include("partials/header"); -%>
+<h6><%= translation.step %> 1. <%= translation.of %> 4</h6>
+<h2><%= translation.localization %></h2>
+<p>
+    <%= translation.localization_configuration_text %>
+</p>
+
+<form action="/api/configuration/localization" method="POST" autocomplete="off">
+    <label>
+        <select name="language">
+            <% for(const language of Object.keys(languages)) { %>
+                <option value="<%= language %>"><%= languages[language] %></option>
+            <% } %>
+        </select>
+        <span class="placeholder"><%= translation.language %></span>
+    </label>
+
+    <label>
+        <select name="country">
+            <% for(const country of Object.keys(countries)) { %>
+                <option value="<%= country %>"><%= countries[country] %></option>
+            <% } %>
+        </select>
+        <span class="placeholder"><%= translation.country %></span>
+    </label>
+
+    <button type="submit"><%= translation.continue %></button>
+</form>
+
+<%- include("partials/footer"); -%>

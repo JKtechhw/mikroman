@@ -1,7 +1,10 @@
 const configEditor = require("../libs/configEditor");
+const local = require("../libs/localization");
 const express = require("express");
 const router = express.Router();
 const ce = new configEditor();
+
+const localization = new local();
 
 router.use(express.static("public"));
 
@@ -15,13 +18,14 @@ router.use("*", (req, res, next) => {
     res.status(403).render("configuration/error", {
         errorCode: 403,
         errorParagraphs: [
-            "Konfigurace byla již dokončena.",
-        ]
+            localization.getTranslation().configuration.finished_configuration,
+        ],
+        translation: localization.getTranslation().configuration
     });
     return;
 });
 
-router.use("/", (req, res) => {
+router.get("/", (req, res) => {
     const configured = req.app?.locals?.configured || false;
     if(configured == true) {
         next();
@@ -36,14 +40,16 @@ router.use("/", (req, res) => {
         res.status(500).render("configuration/error", {
             errorCode: 500,
             errorParagraphs: [
-                "Nepodařilo se přečíst hodnoty z konfiguračního souboru. Ujistěte se že konfigurační soubor existuje.",
-                "Pro automatické vytvoření konfiguračního souboru restartujte aplikaci."
-            ]
+                localization.getTranslation().configuration.config_file_error,
+                localization.getTranslation().configuration.config_file_hint
+            ],
         });
     }
 
     if(Object.keys(configData).includes("configured") && configData.configured == true) {
-        res.render("configuration/finish");
+        res.render("configuration/finish", {
+            translation: localization.getTranslation().configuration
+        });
     }
 
     else if(
@@ -53,16 +59,30 @@ router.use("/", (req, res) => {
         Object.keys(configData).includes("db_user") &&
         Object.keys(configData).includes("db_password")
     ) {
-        res.render("configuration/user");
+        res.render("configuration/user", {
+            translation: localization.getTranslation().configuration
+        });
     }
-    
-    else {
+
+    else if(
+        Object.keys(configData).includes("language") &&
+        Object.keys(configData).includes("country")
+    ) {
         res.render("configuration/database", {
             db_host: configData.db_host || "",
             db_port: configData.db_port || "",
             db_name: configData.db_name || "",
             db_user: configData.db_user || "",
             db_password: configData.db_password || "",
+            translation: localization.getTranslation().configuration
+        });
+    }
+    
+    else {
+        res.render("configuration/localization", {
+            languages: localization.getLanguages(),
+            countries: localization.getCountries(),
+            translation: localization.getTranslation().configuration
         });
     }
 });
@@ -71,8 +91,9 @@ router.use("*", (req, res) => {
     res.status(404).render("configuration/error", {
         errorCode: 404,
         errorParagraphs: [
-            "Stránka neexistuje",
-        ]
+            localization.getTranslation().http_errors["404"]
+        ],
+        translation: localization.getTranslation()
     });
 });
 

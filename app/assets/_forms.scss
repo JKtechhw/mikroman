@@ -41,7 +41,7 @@
             top: 50%;
         }
         
-        input {
+        input, select {
             background-color: $color-input-background-dark;
             color: $color-input-text-light;
             border: 1px solid transparent;
@@ -116,6 +116,14 @@
             &::after {
                 right: 5px;
             }
+        }
+    }
+
+    .fom-part {
+        display: none;
+
+        &.visible {
+            display: block;
         }
     }
 

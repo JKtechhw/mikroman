@@ -1,17 +1,17 @@
 <%- include("partials/header"); -%>
-<h6>Krok 3. z 3</h6>
-<h2>Nastavení dokončeno</h2>
+<h6><%= translation.step %> 4. <%= translation.of %> 4</h6>
+<h2><%= translation.configuration_finished %></h2>
 <p>
-    Nastavení je dokončeno, config aplikace se nachází v souboru <i>./config/config.json</i>, před úpravou tohoto souboru doporučuji vygenerovaný soubor zálohovat pro případnou obnovu.
+    <%- translation.finish_configuration_text %>
 </p>
 
 <p>
-    Nyní můžete pokračovat na přihlášení a přidání prvního zařízení.
+    <%= translation.finish_configuration_login %>
 </p>
 
-<form action="/api/configuration/finish" method="POST">
+<form action="/api/configuration/finish" method="POST" autocomplete="off">
     <input type="hidden" value="true" name="submit" />
-    <button type="submit">Dokočit</button>
+    <button type="submit"><%= translation.finish %></button>
 </form>
 
 <%- include("partials/footer"); -%>

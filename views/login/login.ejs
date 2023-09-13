@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Přihlášení • Mikroman</title>
+    <title><%= translation.login %> • Mikroman</title>
     <link rel="stylesheet" type="text/css" href="/css/login.css">
     <script src="/js/login.js" defer></script>
 </head>
 <body>
     <div id="login-box">
         <div id="login-form" class="block-form">
-            <h2>Přihlášení</h2>
+            <h2><%= translation.login %></h2>
 
-            <form method="POST" action="/api/login">
+            <form method="POST" action="/api/login" autocomplete="off">
                 <label>
                     <input type="text" name="username" required />
-                    <span class="placeholder">Uživatelské jméno</span>
+                    <span class="placeholder"><%= translation.username %></span>
                 </label>
         
                 <label>
                     <input type="password" name="password" required />
-                    <span class="placeholder">Heslo</span>
+                    <span class="placeholder"><%= translation.password %></span>
                 </label>
 
                 <label class="inline">
@@ -29,10 +29,10 @@
                         <div class="indicator"></div>
                     </span>
 
-                    <span>Zůstat přihlášen</span>
+                    <span><%= translation.remember_me %></span>
                 </label>
         
-                <button type="submit">Přihlásit se</button>
+                <button type="submit"><%= translation.login_button %></button>
             </form>
         </div>
     </div>

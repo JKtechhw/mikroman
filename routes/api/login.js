@@ -1,3 +1,4 @@
+const localization = require("../../libs/localization");
 const DB = require("../../libs/db");
 const express = require("express");
 const bcrypt = require("bcrypt");
@@ -5,12 +6,14 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 
 router.post("/", async (req, res) => {
+    const local = new localization();
+
     if(typeof req.body.username == "undefined" || req.body.username.replaceAll(" ", "") == "") {
         res.status(400).json({
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Vyplňte všechny údaje",
+            message: local.getTranslation().login.fill_all_fields,
             error_field: "username"
         });
         return;
@@ -21,7 +24,7 @@ router.post("/", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Vyplňte všechny údaje",
+            message: local.getTranslation().login.fill_all_fields,
             error_field: "password"
         });
         return;
@@ -50,7 +53,7 @@ router.post("/", async (req, res) => {
             success: false,
             status: 400,
             error: "Bad Request",
-            message: "Zkontrolujte uživatelské jméno a heslo"
+            message: local.getTranslation().login.check_username_password
         });
         return;
     }
@@ -63,7 +66,7 @@ router.post("/", async (req, res) => {
                 success: false,
                 status: 500,
                 error: "Internal Server Error",
-                message: "Přihlášení se nezdařilo"
+                message: local.getTranslation().login.login_failed
             });
             return;
         }
@@ -73,7 +76,7 @@ router.post("/", async (req, res) => {
                 success: false,
                 status: 400,
                 error: "Bad Request",
-                message: "Zkontrolujte uživatelské jméno a heslo"
+                message: local.getTranslation().login.check_username_password
             });
             return;
         }
@@ -83,7 +86,7 @@ router.post("/", async (req, res) => {
 
         res.json({
             success: true,
-            message: "Byl jste úspěšně přihlášen"
+            message: local.getTranslation().login.successful_login
         });
     });
 });
@@ -97,7 +100,7 @@ router.delete("/", async (req, res) => {
                 success: false,
                 status: 500,
                 error: "Internal Server Error",
-                message: "Odhlášení se nezdařilo"
+                message: local.getTranslation().login.logout_failed
             });
             return;
         }
@@ -105,7 +108,7 @@ router.delete("/", async (req, res) => {
 
     res.json({
         success: true,
-        message: "Byl jste úspěšně odhlášen"
+        message: local.getTranslation().login.successful_logout
     });
 });
 

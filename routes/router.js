@@ -1,8 +1,6 @@
-const configEditor = require("../libs/configEditor");
 const bodyParser = require('body-parser'); 
 const express = require("express");
 const router = express.Router();
-const ce = new configEditor();
 
 const configurationRouter = require("./configuration");
 const defaultRouter = require("./default");

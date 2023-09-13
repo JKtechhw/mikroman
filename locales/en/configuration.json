@@ -1,0 +1,56 @@
+{
+    "configuration": "Configuration",
+    "step": "Step",
+    "of": "of",
+    "continue": "Continue",
+
+    "localization": "Localization",
+    "language": "Language",
+    "country": "Country",
+    "fill_all_fields": "Please fill all required fields",
+    "localization_configuration_text": "Select your language and your country. Country is required due to wifi settings.",
+    "completed_localization": "Localization has already been configured",
+    "language_not_available": "Language is not available",
+    "invalid_country": "Invalid country",
+    "successful_localization": "Localization has been successfully configured",
+
+    "database": "Database",
+    "database_configuration_text": "For the application to work, a PostgreSQL database is needed, preferably with a separate user and database, otherwise there could be collisions in table names.",
+    "host": "Host",
+    "port": "Port",
+    "database_name": "Database name",
+    "username": "Username",
+    "password": "Password",
+    "completed_database": "Database has already been configured",
+    "invalid_port": "Invalid port",
+    "unable_to_create_structure": "Unable to create a database structure",
+    "unable_write_to_file": "Unable to write data to configuration file",
+    "check_log": "Check the application log",
+    "successful_database": "The database configuration was successful",
+
+    "user": "User",
+    "user_configuration_text": "Create the first user, this user <b>cannot</b> be removed. I recommend choose a <b>strong password</b> for him.",
+    "confirm_password": "Confirm password",
+    "completed_user": "User has already been created",
+    "unable_to_read_from_db": "Unable to retrieve data from database",
+    "user_already_exists": "User has already been created",
+    "passwords_not_match": "Passwords do not match",
+    "unable_to_create_user": "Unable to create user",
+    "successful_user": "User was successfully created",
+
+    "configuration_finished": "Configuration finished",
+    "finish_configuration_text": "Configuration is complete, config file of the application is located in the file <i>./config/config.json</i>, before editing this file, I recommends you back up this file for future usage.",
+    "finish_configuration_login": "You can now proceed to login and add your first device.",
+    "finish": "Finish",
+
+    "configuration_required": "Configuration required",
+    "firstly_configure_application": "First you need to configure the application.",
+    "start_configuring": "Start",
+
+    "config_file_error": "Failed to read values from configuration file. Make sure the configuration file exists.",
+    "config_file_hint": "Restart the application to create the configuration file automatically.",
+
+    "completed_configuration": "Configuration has been completed.",
+    "successful_configuration": "Configuration is completed",
+    "finished_configuration": "Configuration has already been completed."
+}

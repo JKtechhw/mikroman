@@ -1,0 +1,15 @@
+{
+    "login": "Log in",
+    "username": "Username",
+    "password": "Password",
+    "remember_me": "Remember Me",
+    "login_button": "Login",
+
+    "fill_all_fields": "Please fill all required fields",
+    "check_username_password": "Check username and password",
+    "login_failed": "Login failed",
+    "successful_login": "Login was successful",
+
+    "logout_failed": "Logout failed",
+    "successful_logout": "You have been successfully logged out"
+}
