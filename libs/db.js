@@ -1,5 +1,6 @@
 const config = require("../libs/configEditor");
 const { Pool } = require("pg");
+const fs = require("fs");
 
 
 class DB {
@@ -143,23 +144,25 @@ class DB {
                     reject(`Connection to PostgreSQL server ${hostname}:${port || 5432} was refused`);
                 }
 
-                if(e.code == "57P03") {
+                else if(e.code == "57P03") {
                     reject(`PostgreSQL is starting up, wait a few moments`);
                 }
 
-                if(e.code == "28P01") {
+                else if(e.code == "28P01") {
                     reject(`Authentication for user ${username} failed`);
                 }
 
-                if(e.code == "3D000") {
+                else if(e.code == "3D000") {
                     reject(`Database "${database}" does not exist`);
                 }
 
-                if(e.message == "Connection terminated due to connection timeout") {
-
+                else if(e.message == "Connection terminated due to connection timeout") {
+                    reject("Connection terminated due to connection timeout");
                 }
 
-                reject(e.message);
+                else {
+                    reject(e.message);
+                }
             }
 
             //Test connection
@@ -171,6 +174,39 @@ class DB {
             catch(e) {
                 reject(e);
             }
+        });
+    }
+
+    testStructure(pathToFile) {
+        return new Promise((resolve, reject) => {
+            if(fs.existsSync(pathToFile) == false) {
+                throw new Error("Source file doesn't exists");
+            }
+
+            fs.readFile(pathToFile, async (err, data) => {
+                if(err) {
+                    throw err;
+                }
+
+                //Get data from database
+                const tables = await this.query("SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND  schemaname != 'information_schema'");
+
+                //Get data from file
+                const query = data.toString();
+                const tableStructure = query.split("CREATE TABLE");
+                tableStructure.shift();
+
+                for(const table of tableStructure) {
+                    let tableName = table.split(" ")[1];
+                    const exists = tables.rows.findIndex(element => element.tablename == tableName);
+                    
+                    if(exists < 0) {
+                        reject(new Error(`Table ${tableName} doesn't exists`));
+                    }
+                }
+
+                resolve();
+            });
         });
     }
 }

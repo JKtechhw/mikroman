@@ -1,10 +1,11 @@
 const configEditor = require("../libs/configEditor");
 const local = require("../libs/localization");
 const express = require("express");
+
+const localization = new local();
 const router = express.Router();
 const ce = new configEditor();
 
-const localization = new local();
 
 router.use(express.static("public"));
 

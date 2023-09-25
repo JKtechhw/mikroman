@@ -1,7 +1,7 @@
 class notification {
     constructor(){}
 
-    error(message, duration = 10, title = "Chyba") {
+    error(message, duration = 10, title = "Error") {
         const notification = this.#buildNotificationBox(message, title);
         notification.classList.add("error");
 
@@ -15,14 +15,14 @@ class notification {
         this.#displayNotification(notification, duration);
     }
 
-    success(message, duration = 10, title= "Úspěch") {
+    success(message, duration = 10, title= "Success") {
         const notification = this.#buildNotificationBox(message, title);
         notification.classList.add("success");
 
         this.#displayNotification(notification, duration);
     }
 
-    warning(message, duration = 10, title = "Varování") {
+    warning(message, duration = 10, title = "Warning") {
         const notification = this.#buildNotificationBox(message, title);
         notification.classList.add("warn");
 

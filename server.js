@@ -4,6 +4,7 @@ const session = require('express-session');
 const express = require("express");
 const crypto = require("crypto");
 const DB = require("./libs/db");
+const path = require("path");
 
 require("dotenv").config();
 const app = express();
@@ -36,13 +37,9 @@ async function initApp() {
 
         //Load postgresql connection 
         typeof process.env.DB_HOST == "undefined" ? null : valuesToEdit["db_host"] = process.env.DB_HOST;
-
         typeof process.env.DB_NAME == "undefined" ? null : valuesToEdit["db_name"] = process.env.DB_NAME;
-
         typeof process.env.DB_PORT == "undefined" ? null : valuesToEdit["db_port"] = process.env.DB_PORT;
-
         typeof process.env.DB_USER == "undefined" ? null : valuesToEdit["db_user"] = process.env.DB_USER;
-
         typeof process.env.DB_PASSWORD == "undefined" ? null : valuesToEdit["db_password"] = process.env.DB_PASSWORD;
 
         try {
@@ -89,11 +86,24 @@ async function initApp() {
         }
 
         catch(e) {
-            console.error("Database test failed");
+            console.error("Database connection test failed");
             throw e;
         }
 
-        console.log("Database test was successful\n");
+        console.error("Database connection test was successful\n");
+
+
+        console.error("Testing database structure");
+        try {
+            await db.testStructure(path.join(__dirname, "structures", "mikroman.sql"));
+        }
+
+        catch(e) {
+            console.error("Database structure test failed");
+            throw e;
+        }
+
+        console.error("Database structure test was successful\n");
 
         app.set("mode", "standard");
         console.log("Starting app in standard mode");
