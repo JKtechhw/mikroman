@@ -6,17 +6,17 @@
 </p>
 <form action="/api/configuration/user" method="POST" autocomplete="off">
     <label>
-        <input name="username" required />
+        <input name="username" type="text" autocomplete="off" required />
         <span class="placeholder"><%= translation.username %></span>
     </label>
 
     <label>
-        <input name="password" type="password" required />
+        <input name="password" type="password" autocomplete="off"  required />
         <span class="placeholder"><%= translation.password %></span>
     </label>
 
     <label>
-        <input name="password_repeat" type="password" required />
+        <input name="password_repeat" type="password" autocomplete="off" required />
         <span class="placeholder"><%= translation.confirm_password %></span>
     </label>
     <button type="submit"><%= translation.continue %></button>

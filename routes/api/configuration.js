@@ -199,6 +199,12 @@ router.post("/database", async (req, res) => {
         return;
     }
 
+    let autoupdate = true;
+
+    if(typeof req.body.db_autoupdate == "undefined") {
+        autoupdate = false;
+    }
+
     const db = new DB();
 
     try {
@@ -272,6 +278,7 @@ router.post("/database", async (req, res) => {
         db_name: req.body.db_database,
         db_user: req.body.db_user,
         db_password: req.body.db_password,
+        db_autoupdate: autoupdate
     }
 
     try {

@@ -93,17 +93,17 @@ async function initApp() {
         console.error("Database connection test was successful\n");
 
 
-        console.error("Testing database structure");
+        console.log("Testing database structure");
         try {
             await db.testStructure(path.join(__dirname, "structures", "mikroman.sql"));
         }
 
         catch(e) {
-            console.error("Database structure test failed");
+            console.error("Database structure test failed!");
             throw e;
         }
 
-        console.error("Database structure test was successful\n");
+        console.log("Database structure test was successful\n");
 
         app.set("mode", "standard");
         console.log("Starting app in standard mode");

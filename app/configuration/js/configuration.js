@@ -63,14 +63,18 @@ class configuration {
 
         const partToggleElements = form?.querySelectorAll("[data-toggle-form-part]");
         partToggleElements?.forEach(element => {
-            element.addEventListener("change", (e) => {
+            element.addEventListener("click", (e) => {
                 const targetPart = document.querySelector(element.dataset.toggleFormPart);
-                if(e.target.checked) {
-                    targetPart.classList.add("visible");
+                if(e.currentTarget.classList.contains("opened")) {
+                    targetPart.style.height = null;
+                    e.currentTarget.classList.remove("opened");
                 }
 
                 else {
-                    targetPart.classList.remove("visible");
+                    const targetHeight = targetPart.scrollHeight;
+                    targetPart.style.height = `${targetHeight}px`;
+                    e.currentTarget.classList.add("opened");
+
                 }
             });
         });

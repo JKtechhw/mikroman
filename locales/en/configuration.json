@@ -3,6 +3,7 @@
     "step": "Step",
     "of": "of",
     "continue": "Continue",
+    "advanced_options": "Advanced options",
 
     "localization": "Localization",
     "language": "Language",
@@ -21,6 +22,7 @@
     "database_name": "Database name",
     "username": "Username",
     "password": "Password",
+    "autoupdate_database": "Automatically update tables",
     "completed_database": "Database has already been configured",
     "invalid_port": "Invalid port",
     "unable_to_create_structure": "Unable to create a database structure",

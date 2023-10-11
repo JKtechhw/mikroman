@@ -68,15 +68,16 @@
             }
         }
 
-        &.inline {
-            input[type="checkbox"] {
-                width: unset;
-            }
+    }
 
-            span {
-                color: $color-gray-light;
-                user-select: none;
-            }
+    .inline {
+        input[type="checkbox"] {
+            width: unset;
+        }
+
+        span {
+            color: $color-gray-light;
+            user-select: none;
         }
     }
     
@@ -119,12 +120,32 @@
         }
     }
 
-    .fom-part {
-        display: none;
+    [data-toggle-form-part] {
+        padding: 0 0 0 35px;
+        position: relative;
 
-        &.visible {
-            display: block;
+        &::before {
+            font-family: $font-bootstrap-icons;
+            transition: 0.2s transform;
+            display: inline-block;
+            position: absolute;
+            font-size: 1.2rem;
+            content: "\F282";
+            left: 10px;
         }
+
+        &.opened {
+            &::before {
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+    .fom-part {
+        transition: height 0.2s;
+        overflow: hidden;
+        padding: 0 10px;
+        height: 0;
     }
 
     i {

@@ -6,45 +6,44 @@
 </p>
 <form action="/api/configuration/database/" method="POST" autocomplete="off">
     <label>
-        <input name="db_host" placeholder="172.17.0.1" value="<%= db_host %>" required />
+        <input name="db_host" placeholder="172.17.0.1" value="<%= db_host %>" autocomplete="off" required />
         <span class="placeholder"><%= translation.host %></span>
     </label>
 
     <label>
-        <input name="db_port" placeholder="5432" value="<%= db_port %>"required />
+        <input name="db_port" placeholder="5432" value="<%= db_port %>" autocomplete="off" required />
         <span class="placeholder"><%= translation.port %></span>
     </label>
 
     <label>
-        <input name="db_database" value="<%= db_name %>" required />
+        <input name="db_database" value="<%= db_name %>" autocomplete="off" required />
         <span class="placeholder"><%= translation.database_name %></span>
     </label>
 
     <label>
-        <input name="db_user" value="<%= db_user %>" required />
+        <input name="db_user" value="<%= db_user %>" autocomplete="off" required />
         <span class="placeholder"><%= translation.username %></span>
     </label>
 
     <label>
-        <input name="db_password" type="password" value="<%= db_password %>" required />
+        <input name="db_password" type="password" value="<%= db_password %>" autocomplete="off" required />
         <span class="placeholder"><%= translation.password %></span>
     </label>
 
-    <!-- <label class="inline">
-        <span class="checkbox" data-toggle-form-part="#advanced-form-part">
-            <input type="checkbox" />
-            <div class="indicator"></div>
-        </span>
-
-        <span>Pokročilé možnosti</span>
-    </label>
+    <div class="inline">
+        <span data-toggle-form-part="#advanced-form-part"><%= translation.advanced_options %></span>
+    </div>
 
     <div id="advanced-form-part" class="fom-part">
-        <label>
-            <input name="db_prefix" required />
-            <span class="placeholder">Předpona tabulek</span>
+        <label class="inline">
+            <span class="checkbox">
+                <input type="checkbox" checked name="db_autoupdate" />
+                <div class="indicator"></div>
+            </span>
+    
+            <span><%= translation.autoupdate_database %></span>
         </label>
-    </div> -->
+    </div>
 
     <button type="submit"><%= translation.continue %></button>
 </form>
